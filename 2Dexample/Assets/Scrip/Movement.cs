@@ -52,6 +52,7 @@ public class Movement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("OnCollisionEnter2D");
+        body.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
     }
     //void OnTri(Collision2D col)
     //{
