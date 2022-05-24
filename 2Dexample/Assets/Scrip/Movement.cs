@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour
     Vector2 movement;
 
     public float runSpeed = 10.0f;
+    private float timer = 0.0f;
+    private bool contact = false;
 
     public delegate void OnPressAction(int sprit);
     public static event OnPressAction buttonAction;
@@ -41,6 +43,18 @@ public class Movement : MonoBehaviour
             buttonAction?.Invoke(3);
 
         }
+
+        if (contact)
+        {
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+            if (timer >= 5)
+            {
+                contact = false;
+            }
+            body.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+            body.GetComponent<Renderer>().material.color = new Color(0, 255, 0);
+        }
     }
 
    
@@ -53,6 +67,7 @@ public class Movement : MonoBehaviour
     {
         Debug.Log("OnCollisionEnter2D");
         body.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+        contact = true;
     }
     //void OnTri(Collision2D col)
     //{
