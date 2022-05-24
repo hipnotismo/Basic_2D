@@ -4,29 +4,57 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    Rigidbody2D body;
-
-    float horizontal;
-    float vertical;
+    [SerializeField] private Rigidbody2D body;
+    
+    Vector2 movement;
 
     public float runSpeed = 10.0f;
 
+    public delegate void OnPressAction(int sprit);
+    public static event OnPressAction buttonAction;
 
-    // Start is called before the first frame update
     void Start()
     {
-        body = GetComponent<Rigidbody2D>();
+        buttonAction?.Invoke(0);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        if (Input.GetKey(KeyCode.S))
+        {
+            buttonAction?.Invoke(0);
+
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            buttonAction?.Invoke(1);
+
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            buttonAction?.Invoke(2);
+
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            buttonAction?.Invoke(3);
+
+        }
     }
 
+   
     private void FixedUpdate()
     {
-        body.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+        body.MovePosition(body.position + movement * runSpeed * Time.fixedDeltaTime);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("OnCollisionEnter2D");
+    }
+    //void OnTri(Collision2D col)
+    //{
+    //    Debug.Log("OnCollisionEnter2D");
+    //}
 }
